@@ -1,0 +1,37 @@
+/* card container */
+.c-c {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space;
+}
+/* product card */
+.p-c {
+    height: 150px;
+    background: #2a2a2a;
+    border-radius: 17px;
+    width: 200px;
+    margin: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.p-c input {
+    background: transparent;
+    border: none;
+    color: #fff;
+}
+.p-c input::placeholder {
+    color: #eee;
+}
+/* card head(for image) */
+.pc-h {
+    height: 50px;
+    background: #222;
+}
+/* card text area */
+.pc-b {
+    padding: 10px;
+}
+/* card title */
+.pc-t {
+    font-size: 18px;
+}
