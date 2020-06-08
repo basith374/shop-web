@@ -100,13 +100,10 @@
 }
 /* drop zone */
 .img-drp {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 .img-drp.ptr {
     cursor: pointer;
-}
-.img-drp.emp {
-    margin-bottom: 25px;
 }
 .img-drp .drp {
     height: 100px;
@@ -126,10 +123,14 @@
 }
 .img-drp .prw-i {
     width: 100px;
+    height: 100px;
     border: 2px solid var(--gray-light);
     border-radius: 2px;
     margin: 15px;
     position: relative;
+}
+.img-drp .prw-i.ptr {
+    cursor: pointer;
 }
 .img-drp .prw-i button {
     width: 25px;
@@ -152,4 +153,23 @@
 }
 .img-drp img {
     width: 100%;
+}
+/* modal */
+.mdl {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding: 2rem;
+    background: rgba(0,0,0,.9);
+    z-index: 1;
+}
+.mdl > div {
+    background: var(--gray-dark);
+    padding-top: 15px;
+    border-radius: 8px;
+}
+.img-lib .drp {
+    padding: 0;
 }

@@ -8,6 +8,29 @@ const DELETE_CATEGORY = gql`
         deleteCategory(id: $id)
     }
 `
+const UPDATE_CATEGORY = gql`
+    mutation UpdateCategory($id: Int!, $name: String!) {
+        updateCategory(id: $id, name: $name)
+    }
+`
+
+const ADD_CATEGORY = gql`
+    mutation CreateCategory($name: String!) {
+        addCategory(name: $name) {
+            id,
+            name
+        }
+    }
+`
+
+const GET_CATEGORIES = gql`
+    query {
+        categories {
+            id,
+            name
+        }
+    }
+`
 
 const Dropdown = (props) => {
     let [show, setShow] = useState(false);
@@ -30,12 +53,6 @@ const Dropdown = (props) => {
         </div>
     </div>
 }
-
-const UPDATE_CATEGORY = gql`
-    mutation UpdateCategory($id: Int!, $name: String!) {
-        updateCategory(id: $id, name: $name)
-    }
-`
 
 const CategoryCard = (props) => {
     const [removeCategory] = useMutation(DELETE_CATEGORY);
@@ -96,15 +113,6 @@ const CategoryCard = (props) => {
     </div>
 }
 
-const ADD_CATEGORY = gql`
-    mutation CreateCategory($name: String!) {
-        addCategory(name: $name) {
-            id,
-            name
-        }
-    }
-`
-
 const CategoryNew = () => {
     const [addCategory] = useMutation(ADD_CATEGORY, {
         update(cache, { data: { addCategory }}) {
@@ -131,26 +139,20 @@ const CategoryNew = () => {
     </div>
 }
 
-const GET_CATEGORIES = gql`
-    query {
-        categories {
-            id,
-            name
-        }
-    }
-`
-
 const Categories = () => {
     const { loading, data } = useQuery(GET_CATEGORIES);
+    const renderContent = () => {
+        if(loading) return <Loading />
+        return <div className="c-c">
+            <CategoryNew />
+            {data.categories.map(c => <CategoryCard key={c.id} category={c} />)}
+        </div>
+    }
     return <div>
         <div className="p-h">
             <h1>Categories</h1>
         </div>
-        {loading && <Loading />}
-        {data && <div className="c-c">
-            <CategoryNew />
-            {data.categories.map(c => <CategoryCard key={c.id} category={c} />)}
-        </div>}
+        {renderContent()}
     </div>
 }
 

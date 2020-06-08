@@ -25,9 +25,10 @@ const ProductCard = (props) => {
 const GET_PRODUCTS = gql`
     query {
         products {
-            id,
-            name,
+            id
+            name
             category {
+                id
                 name
             }
         }
@@ -35,40 +36,8 @@ const GET_PRODUCTS = gql`
 `
 
 const Products = () => {
-    const { data, loading } = useQuery(GET_PRODUCTS);
+    const { data, error, loading } = useQuery(GET_PRODUCTS);
     let history = useHistory();
-    // let products = [
-    //     {
-    //         id: 0,
-    //         name: 'Sugar',
-    //         category: 'Cooking',
-    //         active: true,
-    //     },
-    //     {
-    //         id: 1,
-    //         name: 'Salt',
-    //         category: 'Cooking',
-    //         active: true,
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Cinnamon',
-    //         category: 'Cooking',
-    //         active: true,
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'Barley',
-    //         category: 'Cooking',
-    //         active: true,
-    //     },
-    //     {
-    //         id: 4,
-    //         name: 'Wheat',
-    //         category: 'Cooking',
-    //         active: true,
-    //     },
-    // ]
     return <div className="p-m">
         <div className="p-h">
             <h1>Products</h1>
@@ -77,8 +46,9 @@ const Products = () => {
             </div>
         </div>
         {loading && <Loading />}
-        {!loading && data && data.products.length === 0 && <EmptyPage msg="No products" />}
-        {!loading && data && <div className="c-c">
+        {error && <EmptyPage msg="Error" />}
+        {!loading && data.products.length === 0 && <EmptyPage msg="No products" />}
+        {!loading && <div className="c-c">
             {data.products.map(p => <ProductCard key={p.id} product={p} />)}
         </div>}
     </div>

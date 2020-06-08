@@ -3,7 +3,9 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import _ from 'lodash';
-import { useDropzone } from 'react-dropzone';
+import Loading from '../Loading';
+import EmptyPage from '../EmptyPage';
+import { ImageLibrary, Dropzone } from '../Images/Images';
 
 const GET_CATEGORIES = gql`
     query {
@@ -31,6 +33,10 @@ const GET_PRODUCT = gql`
                 purchasePrice
                 mrp
             }
+            images {
+                id
+                filename
+            }
         }
     }
 `
@@ -44,16 +50,16 @@ const GET_PRODUCTS = gql`
 `
 
 const ADD_PRODUCT = gql`
-    mutation CreateProduct($name: String!, $description: String, $tags: String, $categoryId: Int!, $active: Boolean!, $productVariants: [ProductVariantInput!]!) {
-        addProduct(name: $name, description: $description, tags: $tags, categoryId: $categoryId, active: $active, ProductVariants: $productVariants) {
+    mutation CreateProduct($name: String!, $description: String, $tags: String, $categoryId: Int!, $active: Boolean!, $productVariants: [ProductVariantInput!]!, $images: [Int!]!) {
+        addProduct(name: $name, description: $description, tags: $tags, categoryId: $categoryId, active: $active, ProductVariants: $productVariants, images: $images) {
             id
         }
     }
 `
 
 const UPDATE_PRODUCT = gql`
-    mutation UpdateProduct($id: Int!, $name: String!, $description: String, $tags: String, $categoryId: Int!, $active: Boolean!, $productVariants: [ProductVariantInput!]!) {
-        updateProduct(id: $id, name: $name, description: $description, tags: $tags, categoryId: $categoryId, active: $active, ProductVariants: $productVariants)
+    mutation UpdateProduct($id: Int!, $name: String!, $description: String, $tags: String, $categoryId: Int!, $active: Boolean!, $productVariants: [ProductVariantInput!]!, $images: [Int!]!) {
+        updateProduct(id: $id, name: $name, description: $description, tags: $tags, categoryId: $categoryId, active: $active, ProductVariants: $productVariants, images: $images)
     }
 `
 
@@ -89,34 +95,13 @@ const ProductVariant = (props) => {
 const Product = () => {
     let history = useHistory();
     let [variants, setVariants] = useState([]);
+    let [showImageLibrary, setShowImageLibrary] = useState(false);
     let { id } = useParams();
     if(id) id = parseInt(id, 10);
     // dropzone
-    // let [uploadImage] = useMutation(UPLOAD_IMAGE)
-    const [files, setFiles] = useState([]);
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: 'image/*',
-        onDrop: acceptedFiles => {
-            let newFiles = acceptedFiles.map(f => Object.assign(f, {
-                preview: URL.createObjectURL(f)
-            }))
-            setFiles(files.concat(newFiles))
-            acceptedFiles.forEach(f => {
-                // uploadImage({
-                //     variables: { image: f },
-                //     update(cache, { data: { uploadImage }}) {
-                //         f.uploadedImageId = uploadImage.id;
-                //     }
-                // })
-            });
-        }
-    })
-    useEffect(() => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach(f => URL.revokeObjectURL(f.preview));
-    }, [files]);
-    const { data } = useQuery(GET_CATEGORIES);
-    const { data: data2 } = useQuery(GET_PRODUCT, {
+    const [images, setImages] = useState([]);
+    const { data, loading: loadingCats } = useQuery(GET_CATEGORIES);
+    const { data: data2, loading } = useQuery(GET_PRODUCT, {
         skip: !id,
         variables: { id }
     });
@@ -140,6 +125,7 @@ const Product = () => {
             catg.current.value = data2.product.category.id;
             actv.current.checked = data2.product.active;
             setVariants(data2.product.productVariants)
+            setImages(data2.product.images)
         }
     }, [data2]);
     // fields
@@ -160,6 +146,7 @@ const Product = () => {
                 if(isNaN(v.id)) v = _.omit(v, 'id');
                 return _.omit(v, '__typename')
             }),
+            images: images.map(i => i.id),
         }
         if(_.get(data2, 'product')) updateProduct({
             variables: Object.assign({ id }, variables),
@@ -193,6 +180,12 @@ const Product = () => {
     const removeVariant = (id) => {
         setVariants(variants.filter(v => v.id !== id));
     }
+    if(id && loading) return <div>
+        <Loading />
+    </div>
+    if(id && !data2.product) return <div>
+        <EmptyPage msg="Product not found" />
+    </div>
     return <div>
         <div className="p-h">
             <h1>{_.get(data2, 'product') ? 'Edit' : 'Create'} Product</h1>
@@ -220,27 +213,35 @@ const Product = () => {
                 <label>Category *</label>
                 <div>
                     <select ref={catg}>
-                        {data && data.categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                        {!loadingCats && data.categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
                 </div>
             </div>
         </div>
-        <div className={'img-drp ptr' + (files.length === 0 ? ' emp' : '')}>
-            <div {...getRootProps({className: 'drp'})}>
-                <div>Select images / Drop images here</div>
-            </div>
+        <Dropzone
+            text="Select images / Drop images here"
+            onClick={() => setShowImageLibrary(true)}
+            onImageAdded={img => setImages([img, ...images])} />
+        <div className={'img-drp'}>
             <div className="prw">
-                {files.map((f, i) => {
-                    let removeFile = () => {
-                        setFiles([...files.slice(0, i), ...files.slice(i + 1)])
-                    }
-                    return <div className="prw-i" key={i}>
-                        <button onClick={removeFile}><img src="/close.svg" /></button>
-                        <img src={f.preview} alt="preview" />
+                {images.map(img => {
+                    let removeImg = () => setImages(images.filter(i => i.id !== img.id))
+                    return <div className="prw-i" key={img.id}>
+                        <button onClick={removeImg}><img src="/close.svg" alt="remove" /></button>
+                        <img src={img.filename} alt="preview" />
                     </div>
                 })}
             </div>
         </div>
+        {showImageLibrary && <div className="mdl" onClick={() => setShowImageLibrary(false)}>
+            <div onClick={e => e.stopPropagation()}>
+                <ImageLibrary onSelect={img => {
+                    const existing = images.map(i => i.id);
+                    if(!existing.includes(img.id)) setImages([img, ...images])
+                    setShowImageLibrary(false)
+                }} />
+            </div>
+        </div>}
         <div className="c-f -c">
             <h2>Variants</h2>
             <table className="pt">
