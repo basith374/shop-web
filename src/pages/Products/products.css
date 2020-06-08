@@ -7,11 +7,14 @@
 /* product card */
 .p-c {
     height: 150px;
-    background: #2a2a2a;
+    background: var(--gray-dark);
     border-radius: 17px;
     width: 200px;
     margin: 10px;
     overflow: hidden;
+    position: relative;
+}
+.p-c.ptr {
     cursor: pointer;
 }
 .p-c input {
@@ -22,16 +25,131 @@
 .p-c input::placeholder {
     color: #eee;
 }
+.p-c .mnu {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.p-c .mnu > button {
+    height: 30px;
+    width: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 0;
+}
+.p-c .mnu > button img {
+    height: 16px;
+    width: 16px;
+    filter: invert(1);
+}
+.p-c .mnu > button:active {
+    background: var(--gray-light);
+}
+.p-c .mnu-drp {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 32px;
+    padding: 5px 0;
+    background: var(--gray-light);
+    border-radius: 4px;
+    width: 100px;
+}
+.p-c .mnu-drp button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 100%;
+    outline: none;
+}
+.p-c .mnu-drp button::-moz-focus-inner {
+    border: none;
+}
+.p-c .mnu-drp button:active {
+    background: var(--gray-dark);
+}
+.p-c .mnu.-shw .mnu-drp {
+    display: block;
+}
 /* card head(for image) */
 .pc-h {
     height: 50px;
-    background: #222;
+    background: var(--gray-darker);
+    overflow: hidden;
 }
 /* card text area */
 .pc-b {
     padding: 10px;
 }
 /* card title */
-.pc-t {
+.pc-t,
+.p-c input {
     font-size: 18px;
+}
+/* product variant table */
+.pt td:nth-child(2),
+.pt td:nth-child(4) {
+    width: 100px;
+}
+.pt td:nth-child(3) {
+    width: 140px;
+}
+/* drop zone */
+.img-drp {
+    margin-bottom: 5px;
+}
+.img-drp.ptr {
+    cursor: pointer;
+}
+.img-drp.emp {
+    margin-bottom: 25px;
+}
+.img-drp .drp {
+    height: 100px;
+    border: 2px dashed var(--gray-light);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px;
+}
+.img-drp .drp.ovr {
+    background: var(--gray-dark);
+}
+.img-drp .prw {
+    display: flex;
+    flex-wrap: wrap;
+}
+.img-drp .prw-i {
+    width: 100px;
+    border: 2px solid var(--gray-light);
+    border-radius: 2px;
+    margin: 15px;
+    position: relative;
+}
+.img-drp .prw-i button {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(0,0,0,.5);
+    padding: 8px;
+    cursor: pointer;
+}
+.img-drp .prw-i button:hover {
+    background: rgba(0,0,0,.9);
+}
+.img-drp .prw-i button img {
+    filter: invert(1);
+}
+.img-drp img {
+    width: 100%;
 }

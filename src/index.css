@@ -17,8 +17,12 @@ html, body, #root {
   height: 100%;
 }
 
-input, button, select {
+input, button, select, textarea {
   font-family: Muli;
+}
+
+img {
+  vertical-align: top;
 }
 
 code {

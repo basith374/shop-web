@@ -1,35 +1,48 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
+import EmptyPage from '../EmptyPage';
+import Loading from '../Loading';
 
-export default () => {
-    let stores = [
-        {
-            id: 0,
-            name: 'Azeez stores',
-            location: 'Thalassery',
-        },
-        {
-            id: 1,
-            name: 'Fathima stores',
-            location: 'Dharmada',
-        },
-        {
-            id: 2,
-            name: 'Family mart',
-            location: 'Koduvalli',
-        },
-    ]
-    return <div>
-        <h1  className="p-h">Stores</h1>
-        <div>
-            <table>
-                <tbody>
-                    {stores.map(s => {
-                        return <tr key={s.id}>
-                            <td>{s.name}</td>
-                        </tr>
-                    })}
-                </tbody>
-            </table>
+const StoreCard = (props) => {
+    let history = useHistory();
+    return <div className="p-c ptr" onClick={e => history.push('/stores/' + props.store.id)}>
+        <div className="pc-h">
+        </div>
+        <div className="pc-b">
+            <div className="pc-t">{props.store.name}</div>
+            <div>{props.store.locality}</div>
         </div>
     </div>
 }
+
+const GET_STORES = gql`
+    query {
+        stores {
+            id
+            name
+            locality
+        }
+    }
+`
+
+const Stores = () => {
+    let history = useHistory();
+    const { data, loading } = useQuery(GET_STORES);
+    return <div className="p-m">
+        <div className="p-h">
+            <h1>Stores</h1>
+            <div className="ph-r">
+                <button onClick={e => history.push('/stores/create')}>Add</button>
+            </div>
+        </div>
+        {loading && <Loading />}
+        {!loading && data.stores.length === 0 && <EmptyPage msg="No stores" />}
+        <div className="c-c">
+            {data && data.stores.map(s => <StoreCard key={s.id} store={s} />)}
+        </div>
+    </div>
+}
+
+export default Stores;

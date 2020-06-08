@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import './orders.css';
 
-export default () => {
+const Orders = () => {
     let orders = [
         {
             id: 0,
@@ -46,7 +46,9 @@ export default () => {
         return 'Unknown';
     }
     return <div>
-        <h1  className="p-h">Orders</h1>
+        <div className="p-h">
+            <h1>Orders</h1>
+        </div>
         <div>
             <table>
                 <thead>
@@ -73,3 +75,5 @@ export default () => {
         </div>
     </div>
 }
+
+export default Orders;
