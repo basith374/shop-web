@@ -14,14 +14,42 @@ import Store from './pages/Store';
 import Stores from './pages/Stores';
 import Customers from './pages/Customers';
 import Images from './pages/Images/Images';
-
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: createUploadLink({ uri: 'http://localhost:4000' })
 })
 
+const GET_PENDING_ORDERS = gql`
+    query {
+        pendingOrders {
+            id
+            customer {
+                id
+                name
+            }
+            address {
+                id
+                locality
+            }
+            total
+            status
+            createdAt
+        }
+    }
+`
+
 function Sidebar() {
+  let { data } = useQuery(GET_PENDING_ORDERS);
+  const pendingOrdersBadge = () => {
+    if(data) {
+      let count = data.pendingOrders.length;
+      return <span className="badge">{count}</span>
+    }
+    return null
+  }
   return <div className="s-b">
     <div>
       <NavLink to="/products" activeClassName="actv">Products</NavLink>
@@ -39,7 +67,7 @@ function Sidebar() {
       <NavLink to="/customers" activeClassName="actv">Customers</NavLink>
     </div>
     <div>
-      <NavLink to="/orders" activeClassName="actv">Orders <span className="badge">1</span></NavLink>
+      <NavLink to="/orders" activeClassName="actv">Orders {pendingOrdersBadge()}</NavLink>
     </div>
   </div>
 }
@@ -47,8 +75,11 @@ function Sidebar() {
 function Content() {
   return <div className="s-c">
     <Switch>
-      <Route path="/orders">
+      <Route path="/orders" exact>
         <Orders />
+      </Route>
+      <Route path="/orders/create">
+        <Order />
       </Route>
       <Route path="/stores" exact>
         <Stores />

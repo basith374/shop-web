@@ -229,3 +229,13 @@ table td:last-child {
   from { transform: rotate(0) }
   to { transform: rotate(360deg) }
 }
+/* padding top */
+.sect {
+  padding-top: 15px;
+}
+.sect.-c {
+  width: 300px;
+}
+.sect.-c td:first-child {
+  width: 100px;
+}

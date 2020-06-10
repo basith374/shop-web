@@ -1,42 +1,34 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 import moment from 'moment';
 import './orders.css';
+import Loading from '../Loading';
+import EmptyPage from '../EmptyPage';
+
+const GET_ORDERS = gql`
+    query {
+        orders {
+            id
+            customer {
+                id
+                name
+            }
+            address {
+                id
+                locality
+            }
+            total
+            status
+            createdAt
+        }
+    }
+`
 
 const Orders = () => {
-    let orders = [
-        {
-            id: 0,
-            name: 'Bazi',
-            place: 'Dharmadam',
-            order_total: 100,
-            time: moment().valueOf(),
-            state: 0,
-        },
-        {
-            id: 1,
-            name: 'Foozi',
-            place: 'Parimadom',
-            order_total: 890,
-            time: moment().subtract(1, 'minute').valueOf(),
-            state: 1,
-        },
-        {
-            id: 2,
-            name: 'Moozi',
-            place: 'Kannur',
-            order_total: 500,
-            time: moment().subtract(14, 'minute').valueOf(),
-            state: 2,
-        },
-        {
-            id: 3,
-            name: 'Shoozi',
-            place: 'Chokli',
-            order_total: 13000,
-            time: moment().subtract(30, 'minute').valueOf(),
-            state: 3,
-        },
-    ]
+    const { data, loading, error } = useQuery(GET_ORDERS);
+    const history = useHistory();
     const now = moment().valueOf();
     const renderState = state => {
         if(state === 0) return <div className="ylw">Waiting</div>
@@ -45,11 +37,11 @@ const Orders = () => {
         if(state === 3) return <div className="red">Cancelled</div>
         return 'Unknown';
     }
-    return <div>
-        <div className="p-h">
-            <h1>Orders</h1>
-        </div>
-        <div>
+    const renderContent = () => {
+        if(error) return <EmptyPage msg="Error" />;
+        if(loading) return <Loading />;
+        if(!loading && data.orders.length === 0) return <EmptyPage msg="No orders" />
+        return <div>
             <table>
                 <thead>
                     <tr>
@@ -61,18 +53,28 @@ const Orders = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map(s => {
+                    {data.orders.map(s => {
                         return <tr key={s.id}>
-                            <td>{s.name}</td>
-                            <td>{s.place}</td>
-                            <td>₹ {s.order_total}</td>
-                            <td>{moment.duration(now - s.time).humanize()} ago</td>
-                            <td>{renderState(s.state)}</td>
+                            <td>{s.customer.name}</td>
+                            <td>{s.address.locality}</td>
+                            <td>₹ {s.total}</td>
+                            {/* <td>{moment.duration(now - s.time).humanize()} ago</td> */}
+                            <td>{moment.duration(now - parseInt(s.createdAt, 10)).humanize()} ago</td>
+                            <td>{renderState(s.status)}</td>
                         </tr>
                     })}
                 </tbody>
             </table>
         </div>
+    }
+    return <div>
+        <div className="p-h">
+            <h1>Orders</h1>
+            <div className="ph-r">
+                <button onClick={e => history.push('/orders/create')}>Add</button>
+            </div>
+        </div>
+        {renderContent()}
     </div>
 }
 

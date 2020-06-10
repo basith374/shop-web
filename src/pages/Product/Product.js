@@ -26,7 +26,7 @@ const GET_PRODUCT = gql`
             category {
                 id
             }
-            productVariants {
+            variants {
                 id
                 name
                 price
@@ -50,16 +50,16 @@ const GET_PRODUCTS = gql`
 `
 
 const ADD_PRODUCT = gql`
-    mutation CreateProduct($name: String!, $description: String, $tags: String, $categoryId: Int!, $active: Boolean!, $productVariants: [ProductVariantInput!]!, $images: [Int!]!) {
-        addProduct(name: $name, description: $description, tags: $tags, categoryId: $categoryId, active: $active, ProductVariants: $productVariants, images: $images) {
+    mutation CreateProduct($name: String!, $description: String, $tags: String, $CategoryId: Int!, $active: Boolean!, $variants: [ProductVariantInput!]!, $images: [Int!]!) {
+        addProduct(name: $name, description: $description, tags: $tags, CategoryId: $CategoryId, active: $active, ProductVariants: $variants, images: $images) {
             id
         }
     }
 `
 
 const UPDATE_PRODUCT = gql`
-    mutation UpdateProduct($id: Int!, $name: String!, $description: String, $tags: String, $categoryId: Int!, $active: Boolean!, $productVariants: [ProductVariantInput!]!, $images: [Int!]!) {
-        updateProduct(id: $id, name: $name, description: $description, tags: $tags, categoryId: $categoryId, active: $active, ProductVariants: $productVariants, images: $images)
+    mutation UpdateProduct($id: Int!, $name: String!, $description: String, $tags: String, $CategoryId: Int!, $active: Boolean!, $variants: [ProductVariantInput!]!, $images: [Int!]!) {
+        updateProduct(id: $id, name: $name, description: $description, tags: $tags, CategoryId: $CategoryId, active: $active, ProductVariants: $variants, images: $images)
     }
 `
 
@@ -124,7 +124,7 @@ const Product = () => {
             tags.current.value = data2.product.tags;
             catg.current.value = data2.product.category.id;
             actv.current.checked = data2.product.active;
-            setVariants(data2.product.productVariants)
+            setVariants(data2.product.variants)
             setImages(data2.product.images)
         }
     }, [data2]);
@@ -140,7 +140,7 @@ const Product = () => {
             name: name.current.value,
             description: desc.current.value,
             tags: tags.current.value,
-            categoryId: parseInt(catg.current.value, 10),
+            CategoryId: parseInt(catg.current.value, 10),
             active: actv.current.checked,
             productVariants: variants.map(v => {
                 if(isNaN(v.id)) v = _.omit(v, 'id');

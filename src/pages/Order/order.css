@@ -1,0 +1,9 @@
+.ot td:nth-child(2) {
+    width: 100px;
+}
+.ot td:nth-child(3) {
+    width: 100px;
+}
+.ot td:nth-child(4) {
+    width: 120px;
+}
