@@ -17,6 +17,24 @@
   background: #333333;
   border-radius: 15px;
 }
+.App-l {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  font-size: 25px;
+}
+.App-lc {
+  background: #333333;
+  padding: 30px;
+  border-radius: 8px;
+}
+.App-lc .g-signin2 > div {
+  margin: 0 auto;
+}
+.al-t {
+  margin-bottom: 15px;
+}
 /* side bar */
 .s-b {
   width: 180px;
