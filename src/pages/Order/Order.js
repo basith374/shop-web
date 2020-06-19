@@ -149,7 +149,7 @@ const Order = () => {
                 <div>
                     <select ref={address}>
                         {customer && customer.addresses.map(a => {
-                            let { streetAddress, landmark, locality } = a;
+                            let { streetAddress, locality } = a;
                             if(streetAddress.length > 10) streetAddress = streetAddress.slice(0, 9) + '...';
                             return <option key={a.id} value={a.id}>{[streetAddress, locality].join(', ')}</option>
                         })}

@@ -4,7 +4,6 @@ import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import EmptyPage from '../EmptyPage';
 import Loading from '../Loading';
-import { render } from '@testing-library/react';
 
 const StoreCard = (props) => {
     let history = useHistory();
