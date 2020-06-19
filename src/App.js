@@ -24,7 +24,7 @@ function AuthPage() {
 function App() {
   // auth status
   let [auth, setAuth] = useState(localStorage.getItem('token') ? true : false);
-  const uploadLink = createUploadLink({ uri: 'http://localhost:4000' });
+  const uploadLink = createUploadLink({ uri: process.env.REACT_APP_API_URL });
   const authMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }) => ({
       headers: {

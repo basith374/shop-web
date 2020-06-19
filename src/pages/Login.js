@@ -29,7 +29,7 @@ const Login = (props) => {
             <div className="App-lc">
                 <div className="al-t">Dashboard login</div>
                 <GoogleLogin
-                    clientId={}
+                    clientId={'370868874003-9hdfcds0bm221d2dsg6us68glerhsgve'}
                     buttonText="Sign in with Google"
                     onSuccess={onLogin}
                     onFailure={handleLoginFailure}
