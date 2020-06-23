@@ -25,6 +25,9 @@
 .p-c input::placeholder {
     color: #eee;
 }
+.mnu {
+    position: relative;
+}
 .p-c .mnu {
     position: absolute;
     right: 10px;
@@ -47,7 +50,7 @@
 .p-c .mnu > button:active {
     background: var(--gray-light);
 }
-.p-c .mnu-drp {
+.mnu-drp {
     display: none;
     position: absolute;
     right: 0;
@@ -55,6 +58,14 @@
     padding: 5px 0;
     background: var(--gray-light);
     border-radius: 4px;
+    z-index: 1;
+    animation: 50ms pop linear;
+}
+@keyframes pop {
+    from{ transform: translateY(10px); }
+    to  { transform: translateY(0); }
+}
+.p-c .mnu-drp {
     width: 100px;
 }
 .p-c .mnu-drp button {
@@ -72,7 +83,7 @@
 .p-c .mnu-drp button:active {
     background: var(--gray-dark);
 }
-.p-c .mnu.-shw .mnu-drp {
+.mnu.-shw .mnu-drp {
     display: block;
 }
 /* card head(for image) */

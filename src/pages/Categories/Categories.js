@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import Loading from '../Loading';
+import Dropdown from '../Dropdown';
 
 const DELETE_CATEGORY = gql`
     mutation DeleteCategory($id: Int!) {
@@ -31,28 +32,6 @@ const GET_CATEGORIES = gql`
         }
     }
 `
-
-const Dropdown = (props) => {
-    let [show, setShow] = useState(false);
-    let dropDown = useRef();
-    const toggleShow = e => {
-        e.stopPropagation()
-        setShow(!show);
-    }
-    useState(() => {
-        let listener = e => {
-            if(!e.target.contains(dropDown.current)) setShow(false);
-        }
-        window.addEventListener('click', listener);
-        return () => window.removeEventListener('click', listener);
-    }, [show]);
-    return <div className={'mnu' + (show ? ' -shw' : '')} ref={dropDown}>
-        <button onClick={toggleShow}><img src="/menu.svg" alt="menu" /></button>
-        <div className="mnu-drp">
-            {props.children}
-        </div>
-    </div>
-}
 
 const CategoryCard = (props) => {
     const [removeCategory] = useMutation(DELETE_CATEGORY);
@@ -100,7 +79,7 @@ const CategoryCard = (props) => {
         if(edit) input.current.focus();
     }, [edit]);
     return <div className="p-c">
-        <Dropdown>
+        <Dropdown button={toggle => <button onClick={toggle}><img src="/menu.svg" alt="menu" /></button>}>
             <button onClick={onDelete}>Delete</button>
         </Dropdown>
         <div className="pc-h">

@@ -2,7 +2,8 @@
   --gray-dark: #2a2a2a;
   --gray-darker: #262626;
   --gray-light: #616161;
-  --gray-lighter: #262626;
+  --gray-lighter: #535353;
+  --theme: #a3f7bf;
 }
 .App {
   min-height: 100%;
@@ -63,7 +64,7 @@
 
 .s-b a.actv {
   /* border-color: #2f4373; */
-  background: #a3f7bf;
+  background: var(--theme);
   color: #2a2a2a;
 }
 /* page heading */
@@ -72,20 +73,12 @@
 }
 .p-h h1 {
   margin: 0 15px 15px;
+  font-weight: 600;
 }
 .ph-r {
   position: absolute;
   right: 0;
   top: 0;
-}
-.ph-r button {
-  background: #a3f7bf;
-  border: none;
-  line-height: 30px;
-  padding: 0 30px;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
 }
 /* table */
 table {
@@ -147,7 +140,7 @@ table td:last-child {
 .c-f label {
   display: inline-block;
   margin-bottom: 7px;
-  font-weight: bold;
+  font-weight: 600;
 }
 .c-f .spc {
   padding-top: 5px;
@@ -176,7 +169,7 @@ table td:last-child {
 .c-f input:not([type=checkbox]):focus,
 .c-f select:focus,
 .c-f textarea:focus {
-  border-color: #a3f7bf;
+  border-color: var(--theme);
 }
 .c-f select {
   height: 40px;
@@ -184,13 +177,15 @@ table td:last-child {
 .c-f .grp {
   margin-bottom: 10px;
 }
+.btn,
+.ph-r button,
 .c-f button {
-  background: #a3f7bf;
+  background: var(--theme);
   border: none;
   line-height: 40px;
   padding: 0 30px;
   border-radius: 4px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
 }
 .c-f button.red {
