@@ -33,6 +33,9 @@ const Sidebar = () => {
     }
     return <div className="s-b">
         <div>
+            <NavLink to="/homepage" activeClassName="actv">Homepage</NavLink>
+        </div>
+        <div>
             <NavLink to="/products" activeClassName="actv">Products</NavLink>
         </div>
         <div>

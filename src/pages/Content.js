@@ -11,12 +11,16 @@ import Store from './Store';
 import Stores from './Stores';
 import Customers from './Customers';
 import Images from './Images';
+import Homepage from './Homepage/Homepage';
 
 const Content = () => {
     return <div className="s-c">
         <Switch>
             <Route path="/" exact>
                 <Dashboard />
+            </Route>
+            <Route path="/homepage">
+                <Homepage />
             </Route>
             <Route path="/orders" exact>
                 <Orders />
