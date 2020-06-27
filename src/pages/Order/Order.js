@@ -100,12 +100,11 @@ const Order = () => {
         setItems(items.filter(i => i.id !== id))
     }
     const createOrder = () => {
-        console.log(sum)
         let variables = {
             CustomerId: customer.id,
             addressId: parseInt(address.current.value, 10),
             deliveryCharge: parseFloat(delChrg.current.value),
-            OrderItems: _.map(sum, (v, k) => ({productVariantId: parseInt(k), qty: v}))
+            OrderItems: _.map(sum, (v, k) => ({id: parseInt(k), qty: v}))
         }
         addOrder({
             variables,

@@ -52,7 +52,7 @@
     filter: invert(1);
 }
 .p-c .mnu > button:active {
-    background: var(--gray-light);
+    background: var(--gray-lighter);
 }
 .mnu-drp {
     display: none;
@@ -72,19 +72,19 @@
 .p-c .mnu-drp {
     width: 100px;
 }
-.p-c .mnu-drp button {
+.mnu-drp button {
     background: transparent;
     border: none;
     color: #fff;
-    padding: 5px 10px;
+    padding: 10px;
     cursor: pointer;
     width: 100%;
     outline: none;
 }
-.p-c .mnu-drp button::-moz-focus-inner {
+.mnu-drp button::-moz-focus-inner {
     border: none;
 }
-.p-c .mnu-drp button:active {
+.mnu-drp button:active {
     background: var(--gray-dark);
 }
 .mnu.-shw .mnu-drp {
@@ -133,7 +133,7 @@
 }
 .img-drp .drp {
     height: 100px;
-    border: 2px dashed var(--gray-light);
+    border: 2px dashed var(--gray-lighter);
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -150,7 +150,7 @@
 .img-drp .prw-i {
     width: 100px;
     height: 100px;
-    border: 2px solid var(--gray-light);
+    border: 2px solid var(--gray-lighter);
     border-radius: 2px;
     margin: 15px;
     position: relative;
@@ -197,6 +197,8 @@
     background: var(--gray-dark);
     padding-top: 15px;
     border-radius: 8px;
+    height: 100%;
+    overflow-y: scroll;
 }
 .img-lib .drp {
     padding: 0;

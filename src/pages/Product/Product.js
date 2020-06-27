@@ -128,6 +128,15 @@ const Product = () => {
             setImages(data2.product.images)
         }
     }, [data2]);
+    useEffect(() => {
+        const listener = e => {
+            if(e.keyCode === 27) setShowImageLibrary();
+        }
+        window.addEventListener('keydown', listener);
+        return () => {
+            window.removeEventListener('keydown', listener);
+        }
+    }, [showImageLibrary, setShowImageLibrary]);
     // fields
     const name = useRef();
     const desc = useRef();
@@ -149,12 +158,12 @@ const Product = () => {
             images: images.map(i => i.id),
         }
         if(_.get(data2, 'product')) updateProduct({
-            variables: Object.assign({ id }, variables),
+            variables: {...variables, id },
             update(cache) {
                 const { product } = cache.readQuery({ query: GET_PRODUCT, variables: { id } })
                 cache.writeQuery({
                     query: GET_PRODUCT,
-                    data: { product: Object.assign({}, product, variables) },
+                    data: { product: {...product, ...variables} },
                 })
                 history.goBack();
             }

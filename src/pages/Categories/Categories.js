@@ -69,7 +69,7 @@ const CategoryCard = (props) => {
                         query: GET_CATEGORIES,
                         data: {
                             categories: categories.map(c => {
-                                if(c.id === props.category.id) return Object.assign({}, c, { name });
+                                if(c.id === props.category.id) return {...c,  name };
                                 else return c;
                             })
                         }

@@ -5,6 +5,8 @@ import { ApolloClient, InMemoryCache, ApolloLink } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { createUploadLink } from "apollo-upload-client";
 import { onError } from 'apollo-link-error';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
 
 import Login from './pages/Login';
 import Sidebar from './pages/Sidebar';
@@ -41,9 +43,23 @@ function App() {
       localStorage.removeItem('username');
     }
   })
+  const wsLink = new WebSocketLink({
+    uri: process.env.REACT_APP_WS_URL,
+    options: {
+      reconnect: true
+    },
+  })
+  const link = ApolloLink.split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+    },
+    wsLink,
+    ApolloLink.from([authMiddleware, logoutLink, uploadLink])
+  )
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: ApolloLink.from([authMiddleware, logoutLink, uploadLink]),
+    link,
   })
   let content = auth ? <AuthPage /> : <Login setAuth={setAuth} />
   return <ApolloProvider client={client}>

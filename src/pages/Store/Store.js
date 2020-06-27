@@ -90,12 +90,12 @@ export default () => {
             active: actv.current.checked,
         }
         if(_.get(data, 'store')) updateStore({
-            variables: Object.assign({ id }, variables),
+            variables: { id, ...variables},
             update(cache) {
                 const { store } = cache.readQuery({ query: GET_STORE, variables: { id } })
                 cache.writeQuery({
                     query: GET_STORE,
-                    data: { store: Object.assign({}, store, variables) },
+                    data: { store: {...store, ...variables} },
                 })
                 history.goBack();
             }

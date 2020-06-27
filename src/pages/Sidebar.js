@@ -1,11 +1,31 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import _ from 'lodash';
 
-const GET_PENDING_ORDERS = gql`
+export const GET_PENDING_ORDERS = gql`
     query {
-        pendingOrders {
+        orders(status: 0) {
+            id
+            customer {
+                id
+                name
+            }
+            address {
+                id
+                locality
+            }
+            total
+            status
+            createdAt
+        }
+    }
+`
+
+export const ORDER_SUBSCRIPTION = gql`
+    subscription {
+        orderAdded {
             id
             customer {
                 id
@@ -24,11 +44,21 @@ const GET_PENDING_ORDERS = gql`
 
 const Sidebar = () => {
     let { data } = useQuery(GET_PENDING_ORDERS);
-    const pendingOrdersBadge = () => {
-        if (data) {
-            let count = data.pendingOrders.length;
-            return <span className="badge">{count}</span>
+    useSubscription(ORDER_SUBSCRIPTION, {
+        onSubscriptionData({ client, subscriptionData }) {
+            if(subscriptionData.data) {
+                const { orders } = client.cache.readQuery({ query: GET_PENDING_ORDERS });
+                client.writeQuery({
+                    query: GET_PENDING_ORDERS,
+                    data: { orders: orders.concat(subscriptionData.data.orderAdded) }
+                })
+                new Audio('/notification_bell.mp3').play();
+            }
         }
+    });
+    const pendingOrdersBadge = () => {
+        let count = _.get(data, 'orders.length');
+        if(count) return <span className="badge">{count}</span>
         return null
     }
     return <div className="s-b">
