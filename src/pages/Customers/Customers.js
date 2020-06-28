@@ -20,10 +20,17 @@ const Customers = () => {
             <h1>Customers</h1>
         </div>
         <div>
-            {!loading && <table>
+            {!loading && <table className="dt">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {data.customers.map(c => <tr key={c.id}>
                         <td>{c.name}</td>
+                        <td>{c.email}</td>
                     </tr>)}
                 </tbody>
             </table>}

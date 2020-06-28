@@ -89,7 +89,7 @@ const CategoryCard = (props) => {
     const products = category.products.length;
     return <div className="p-c">
         <Dropdown button={toggle => <button onClick={toggle}><img src="/menu.svg" alt="menu" /></button>}>
-            <button onClick={onDelete}>Delete</button>
+            <button onClick={onDelete} className="mb">Delete</button>
         </Dropdown>
         <div className="pc-h">
             <img src={category.image.filename} alt={category.name} />

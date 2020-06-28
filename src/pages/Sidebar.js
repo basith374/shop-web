@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useQuery, useSubscription } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import _ from 'lodash';
+import { GET_USER } from '../App';
 
 export const GET_PENDING_ORDERS = gql`
     query {
@@ -44,10 +45,11 @@ export const ORDER_SUBSCRIPTION = gql`
 
 const Sidebar = () => {
     let { data } = useQuery(GET_PENDING_ORDERS);
+    const { data: { user } } = useQuery(GET_USER);
     useSubscription(ORDER_SUBSCRIPTION, {
         onSubscriptionData({ client, subscriptionData }) {
             if(subscriptionData.data) {
-                const { orders } = client.cache.readQuery({ query: GET_PENDING_ORDERS });
+                const { orders } = client.readQuery({ query: GET_PENDING_ORDERS });
                 client.writeQuery({
                     query: GET_PENDING_ORDERS,
                     data: { orders: orders.concat(subscriptionData.data.orderAdded) }
@@ -61,10 +63,11 @@ const Sidebar = () => {
         if(count) return <span className="badge">{count}</span>
         return null
     }
+    const isAdmin = user.roles === 'admin';
     return <div className="s-b">
-        <div>
+        {isAdmin && <div>
             <NavLink to="/homepage" activeClassName="actv">Homepage</NavLink>
-        </div>
+        </div>}
         <div>
             <NavLink to="/products" activeClassName="actv">Products</NavLink>
         </div>
@@ -81,7 +84,13 @@ const Sidebar = () => {
             <NavLink to="/customers" activeClassName="actv">Customers</NavLink>
         </div>
         <div>
+            <NavLink to="/users" activeClassName="actv">Users</NavLink>
+        </div>
+        <div>
             <NavLink to="/orders" activeClassName="actv">Orders {pendingOrdersBadge()}</NavLink>
+        </div>
+        <div className="lg-bt">
+            <button onClick={window.logout}>Logout <img src="/logout.svg" alt="logout" /></button>
         </div>
     </div>
 }

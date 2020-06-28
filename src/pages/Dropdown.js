@@ -4,7 +4,7 @@ const Dropdown = (props) => {
     let [show, setShow] = useState(false);
     let dropDown = useRef();
     const toggleShow = e => {
-        e.stopPropagation()
+        if(e) e.stopPropagation()
         setShow(!show);
     }
     useEffect(() => {
@@ -17,7 +17,11 @@ const Dropdown = (props) => {
     return <div className={'mnu' + (show ? ' -shw' : '')} ref={dropDown}>
         {props.button(toggleShow)}
         <div className="mnu-drp">
-            {props.children}
+            {React.Children.map(props.children, child => {
+                return React.cloneElement(child, {
+                    close: toggleShow
+                })
+            })}
         </div>
     </div>
 }

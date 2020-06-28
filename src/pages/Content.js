@@ -11,7 +11,8 @@ import Store from './Store';
 import Stores from './Stores';
 import Customers from './Customers';
 import Images from './Images';
-import Homepage from './Homepage/Homepage';
+import Homepage from './Homepage';
+import Users from './Users';
 
 const Content = () => {
     return <div className="s-c">
@@ -39,6 +40,9 @@ const Content = () => {
             </Route>
             <Route path="/customers">
                 <Customers />
+            </Route>
+            <Route path="/users">
+                <Users />
             </Route>
             <Route path="/categories">
                 <Categories />

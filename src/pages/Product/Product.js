@@ -243,7 +243,7 @@ const Product = () => {
             </div>
         </div>
         {showImageLibrary && <div className="mdl" onClick={() => setShowImageLibrary(false)}>
-            <div onClick={e => e.stopPropagation()}>
+            <div className="mdl-l" onClick={e => e.stopPropagation()}>
                 <ImageLibrary onSelect={img => {
                     const existing = images.map(i => i.id);
                     if(!existing.includes(img.id)) setImages([img, ...images])

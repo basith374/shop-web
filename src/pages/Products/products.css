@@ -72,7 +72,7 @@
 .p-c .mnu-drp {
     width: 100px;
 }
-.mnu-drp button {
+.mnu-drp button.mb {
     background: transparent;
     border: none;
     color: #fff;
@@ -81,10 +81,10 @@
     width: 100%;
     outline: none;
 }
-.mnu-drp button::-moz-focus-inner {
+.mnu-drp button.mb::-moz-focus-inner {
     border: none;
 }
-.mnu-drp button:active {
+.mnu-drp button.mb:active {
     background: var(--gray-dark);
 }
 .mnu.-shw .mnu-drp {
@@ -192,13 +192,34 @@
     padding: 2rem;
     background: rgba(0,0,0,.9);
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .mdl > div {
     background: var(--gray-dark);
-    padding-top: 15px;
     border-radius: 8px;
+}
+.mdl .mdl-l {
+    padding-top: 15px;
     height: 100%;
     overflow-y: scroll;
+}
+.mdl .mdl-c {
+    padding: 30px 15px 15px;
+    width: 500px;
+}
+.mdl-t {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.mdl-f {
+    display: flex;
+    justify-content: center;
+}
+.mdl-f button + button {
+    margin-left: 15px;
 }
 .img-lib .drp {
     padding: 0;

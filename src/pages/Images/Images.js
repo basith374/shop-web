@@ -70,7 +70,7 @@ export const Dropzone = (props) => {
 const ImagePreview = (props) => {
     let [deleteImage] = useMutation(DELETE_IMAGE)
     const removeImage = () => {
-        deleteImage(DELETE_IMAGE, {
+        const cb = () => deleteImage(DELETE_IMAGE, {
             variables: { id: props.id },
             update(cache) {
                 const { images } = cache.readQuery({ query: GET_IMAGES })
@@ -80,6 +80,7 @@ const ImagePreview = (props) => {
                 })
             }
         })
+        window.confirmAction('Are you sure you want to delete this image?', cb);
     }
     const onClick = () => {
         if(props.onSelect) props.onSelect(props.img);

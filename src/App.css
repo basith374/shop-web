@@ -23,7 +23,6 @@
   justify-content: center;
   width: 100%;
   align-items: center;
-  font-size: 25px;
 }
 .App-lc {
   background: #333333;
@@ -33,8 +32,12 @@
 .App-lc .g-signin2 > div {
   margin: 0 auto;
 }
+.al-gb {
+  margin-bottom: 15px;
+}
 .al-t {
   margin-bottom: 15px;
+  font-size: 25px;
 }
 /* side bar */
 .s-b {
@@ -48,6 +51,7 @@
   /* overflow-y: scroll;
   scrollbar-width: none; */
 }
+.s-b button,
 .s-b a {
   background: var(--gray-darker);
   text-decoration: none;
@@ -60,6 +64,8 @@
   color: #eee;
   border: 2px solid var(--gray-darker);
   outline: none;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .s-b a.actv {
@@ -247,6 +253,7 @@ table.dt tr.dc td:last-child {
   justify-content: center;
   align-items: center;
   padding: 10rem 0;
+  flex: 1;
 }
 .lds div {
   width: 50px;
@@ -281,13 +288,13 @@ table.dt tr.dc td:last-child {
 .od-x .mnu-drp {
   top: 45px;
 }
-.mnu-drp button.pur {
+.mnu-drp button.mb.pur {
   background: #9b59b6;
 }
-.mnu-drp button.blu {
+.mnu-drp button.mb.blu {
   background: #3498db;
 }
-.mnu-drp button.grn {
+.mnu-drp button.mb.grn {
   background: #2ecc71;
 }
 .od-x button.ic {
@@ -308,4 +315,33 @@ table.dt tr.dc td:last-child {
 }
 .od-x button.red img {
   filter: invert(1);
+}
+/* users */
+.us-r .c-f {
+  width: 340px;
+  padding-top: 15px;
+}
+.us-r .mnu-drp {
+  top: 45px;
+}
+.lg-bt {
+  margin-top: 15px;
+  padding-top: 20px;
+  border-top: 1px solid #616161;
+}
+.lg-bt button {
+  text-align: left;
+}
+.lg-bt img {
+  width: 16px;
+  filter: invert(1);
+  margin-top: 7px;
+  float: right;
+}
+/* login */
+.err {
+  color: #e74c3c;
+}
+.App-lc .err {
+  text-align: center;
 }

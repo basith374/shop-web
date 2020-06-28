@@ -110,8 +110,8 @@ const Orders = () => {
                                         </div>
                                         <div className="od-l">
                                             <Dropdown button={t => <button className="btn ci" onClick={t}>Change status <img src="down-arrow.svg" alt="caret" /></button>}>
-                                                <button className="pur">Processing</button>
-                                                <button className="blu">Dispatched</button>
+                                                <button className="pur mb">Processing</button>
+                                                <button className="blu mb">Dispatched</button>
                                             </Dropdown>
                                         </div>
                                         <div className="od-l">
