@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Loading from '../Loading';
 import EmptyPage from '../EmptyPage';
 import { ImageLibrary, Dropzone } from '../Images/Images';
+import { PropTypes } from 'prop-types';
 
 const GET_CATEGORIES = gql`
     query {
@@ -86,6 +87,11 @@ const ProductVariant = (props) => {
         <td><input type="number" step="0.01" placeholder="MRP" {...propsFiller('mrp', v => parseFloat(v))} /></td>
         <td><button onClick={onRemove}>Remove</button></td>
     </tr>
+}
+
+ProductVariant.propTypes = {
+    variant: PropTypes.string.isRequired,
+    remove: PropTypes.func.isRequired,
 }
 
 // const UPLOAD_IMAGE = gql`

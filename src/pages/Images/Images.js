@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { PropTypes } from 'prop-types';
 import Loading from '../Loading';
 import { onChange } from '../../helpers';
 
@@ -65,6 +66,12 @@ export const Dropzone = (props) => {
             <div>{props.text || 'Drop images here'}</div>
         </div>
     </div>
+}
+
+Dropzone.propTypes = {
+    onImageAdded: PropTypes.func,
+    onClick: PropTypes.func,
+    text: PropTypes.string,
 }
 
 const ImagePreview = (props) => {
