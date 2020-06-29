@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import Loading from '../Loading';
+import { onChange } from '../../helpers';
 
 const UPLOAD_IMAGE = gql`
     mutation UploadImage($image: Upload!) {
@@ -13,8 +14,8 @@ const UPLOAD_IMAGE = gql`
 `
 
 const GET_IMAGES = gql`
-    query {
-        images {
+    query($str: String) {
+        images(str: $str) {
             id
             filename
         }
@@ -69,7 +70,7 @@ export const Dropzone = (props) => {
 const ImagePreview = (props) => {
     let [deleteImage] = useMutation(DELETE_IMAGE)
     const removeImage = () => {
-        deleteImage(DELETE_IMAGE, {
+        const cb = () => deleteImage(DELETE_IMAGE, {
             variables: { id: props.id },
             update(cache) {
                 const { images } = cache.readQuery({ query: GET_IMAGES })
@@ -79,6 +80,7 @@ const ImagePreview = (props) => {
                 })
             }
         })
+        window.confirmAction('Are you sure you want to delete this image?', cb);
     }
     const onClick = () => {
         if(props.onSelect) props.onSelect(props.img);
@@ -90,11 +92,17 @@ const ImagePreview = (props) => {
 }
 
 export const ImageLibrary = (props) => {
-    const {loading, data} = useQuery(GET_IMAGES);
-    if(loading) return <Loading />
+    const [search, setSearch] = useState('');
+    const {loading, data} = useQuery(GET_IMAGES, {
+        variables: { str: search }
+    });
+    if(loading && !search) return <Loading />
     return <div className="img-lib">
         <div className="il-c">
             <Dropzone text="Drop images here" />
+            <div className="c-f">
+                <input type="text" placeholder="Search images" value={search} onChange={onChange(setSearch)} />
+            </div>
             <div className={'img-drp'}>
                 <div className="prw">
                     {data.images.map(i => {

@@ -9,15 +9,15 @@ import Loading from '../Loading';
 
 const ProductCard = (props) => {
     let history = useHistory();
+    const { product } = props;
+    const image = product.images[0]
     return <div className="p-c ptr" onClick={e => history.push('/products/' + props.product.id)}>
         <div className="pc-h">
+            <img src={image.filename} alt={product.name} />
         </div>
         <div className="pc-b">
             <div className="pc-t">{props.product.name}</div>
-            <div>{_.get(props.product.category, 'name')}</div>
-            <div>
-                <div>active</div>
-            </div>
+            <div className="pc-m">{_.get(props.product.category, 'name')}</div>
         </div>
     </div>
 }
@@ -30,6 +30,10 @@ const GET_PRODUCTS = gql`
             category {
                 id
                 name
+            }
+            images {
+                id
+                filename
             }
         }
     }

@@ -27,8 +27,15 @@ const ADD_CATEGORY = gql`
 const GET_CATEGORIES = gql`
     query {
         categories {
-            id,
+            id
             name
+            image {
+                id
+                filename
+            }
+            products {
+                id
+            }
         }
     }
 `
@@ -62,7 +69,7 @@ const CategoryCard = (props) => {
                         query: GET_CATEGORIES,
                         data: {
                             categories: categories.map(c => {
-                                if(c.id === props.category.id) return Object.assign({}, c, { name });
+                                if(c.id === props.category.id) return {...c,  name };
                                 else return c;
                             })
                         }
@@ -78,16 +85,20 @@ const CategoryCard = (props) => {
     useEffect(() => {
         if(edit) input.current.focus();
     }, [edit]);
+    const { category } = props;
+    const products = category.products.length;
     return <div className="p-c">
         <Dropdown button={toggle => <button onClick={toggle}><img src="/menu.svg" alt="menu" /></button>}>
-            <button onClick={onDelete}>Delete</button>
+            <button onClick={onDelete} className="mb">Delete</button>
         </Dropdown>
         <div className="pc-h">
+            <img src={category.image.filename} alt={category.name} />
         </div>
         <div className="pc-b">
             <div className="pc-t">
-                {edit ? <input ref={input} onKeyDown={onKeyDown} defaultValue={props.category.name} /> : <div onClick={editMode}>{props.category.name}</div>}
+                {edit ? <input ref={input} onKeyDown={onKeyDown} defaultValue={category.name} /> : <div onClick={editMode}>{category.name}</div>}
             </div>
+            <div className="pc-m">{products} Product{products === 1 ? '' : 's'}</div>
         </div>
     </div>
 }

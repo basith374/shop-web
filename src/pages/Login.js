@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { GoogleLogin } from 'react-google-login';
 import { gql } from 'apollo-boost';
@@ -10,15 +10,22 @@ const LOGIN = gql`
 `
 
 const Login = (props) => {
-    let [login] = useMutation(LOGIN);
+    const [login] = useMutation(LOGIN);
+    const [error, setError] = useState();
     const onLogin = (rsp) => {
         let { email, givenName: name } = rsp.profileObj;
         login({
             variables: { token: rsp.tokenId, email, name }
         }).then(rsp => {
             localStorage.setItem('token', rsp.data.login);
-            localStorage.setItem('username', email);
             props.setAuth(true);
+        }).catch(err => {
+            console.log(err)
+            if(err.graphQLErrors) {
+                err.graphQLErrors.forEach(f => {
+                    setError(f.message)
+                })
+            }
         })
     }
     const handleLoginFailure = (err) => {
@@ -28,15 +35,17 @@ const Login = (props) => {
         <div className="App-l">
             <div className="App-lc">
                 <div className="al-t">Dashboard login</div>
-                <GoogleLogin
-                    clientId={'370868874003-92rm2j8u3sftuio1ptod99b2tfkp6jh0'}
-                    buttonText="Sign in with Google"
-                    onSuccess={onLogin}
-                    onFailure={handleLoginFailure}
-                    cookiePolicy={'single_host_origin'}
-                    responseType='code,token'
-                // isSignedIn={true}
-                />
+                <div className="al-gb">
+                    <GoogleLogin
+                        clientId={'370868874003-92rm2j8u3sftuio1ptod99b2tfkp6jh0'}
+                        buttonText="Sign in with Google"
+                        onSuccess={onLogin}
+                        onFailure={handleLoginFailure}
+                        cookiePolicy={'single_host_origin'}
+                        responseType='code,token'
+                    />
+                </div>
+                {error && <div className="err">{error}</div>}
             </div>
         </div>
     </div>

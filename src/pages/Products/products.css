@@ -14,6 +14,9 @@
     overflow: hidden;
     position: relative;
 }
+.p-c.p {
+    height: 165px;
+}
 .p-c.ptr {
     cursor: pointer;
 }
@@ -21,6 +24,7 @@
     background: transparent;
     border: none;
     color: #fff;
+    height: 25px;
 }
 .p-c input::placeholder {
     color: #eee;
@@ -48,7 +52,7 @@
     filter: invert(1);
 }
 .p-c .mnu > button:active {
-    background: var(--gray-light);
+    background: var(--gray-lighter);
 }
 .mnu-drp {
     display: none;
@@ -68,19 +72,19 @@
 .p-c .mnu-drp {
     width: 100px;
 }
-.p-c .mnu-drp button {
+.mnu-drp button.mb {
     background: transparent;
     border: none;
     color: #fff;
-    padding: 5px 10px;
+    padding: 10px;
     cursor: pointer;
     width: 100%;
     outline: none;
 }
-.p-c .mnu-drp button::-moz-focus-inner {
+.mnu-drp button.mb::-moz-focus-inner {
     border: none;
 }
-.p-c .mnu-drp button:active {
+.mnu-drp button.mb:active {
     background: var(--gray-dark);
 }
 .mnu.-shw .mnu-drp {
@@ -88,15 +92,26 @@
 }
 /* card head(for image) */
 .pc-h {
-    height: 50px;
     background: var(--gray-darker);
     overflow: hidden;
+    height: 80px;
+}
+.pc-h img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 /* card text area */
 .pc-b {
-    padding: 10px;
+    padding: 10px 10px 15px;
+}
+.pc-m {
+    font-size: 13px;
 }
 /* card title */
+.pc-t {
+    margin-bottom: 5px;
+}
 .pc-t,
 .p-c input {
     font-size: 18px;
@@ -118,7 +133,7 @@
 }
 .img-drp .drp {
     height: 100px;
-    border: 2px dashed var(--gray-light);
+    border: 2px dashed var(--gray-lighter);
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -135,10 +150,11 @@
 .img-drp .prw-i {
     width: 100px;
     height: 100px;
-    border: 2px solid var(--gray-light);
+    border: 2px solid var(--gray-lighter);
     border-radius: 2px;
     margin: 15px;
     position: relative;
+    overflow: hidden;
 }
 .img-drp .prw-i.ptr {
     cursor: pointer;
@@ -163,6 +179,8 @@
 }
 .img-drp img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 /* modal */
 .mdl {
@@ -174,11 +192,34 @@
     padding: 2rem;
     background: rgba(0,0,0,.9);
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .mdl > div {
     background: var(--gray-dark);
-    padding-top: 15px;
     border-radius: 8px;
+}
+.mdl .mdl-l {
+    padding-top: 15px;
+    height: 100%;
+    overflow-y: scroll;
+}
+.mdl .mdl-c {
+    padding: 30px 15px 15px;
+    width: 500px;
+}
+.mdl-t {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.mdl-f {
+    display: flex;
+    justify-content: center;
+}
+.mdl-f button + button {
+    margin-left: 15px;
 }
 .img-lib .drp {
     padding: 0;
