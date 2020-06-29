@@ -143,9 +143,9 @@ const UserRow = (props) => {
     const onDelete = () => {
         deleteUser()
     }
-    const onDeactivate = () => {
+    // const onDeactivate = () => {
 
-    }
+    // }
     const content = [
         <tr key="m" onClick={() => props.toggle(user.id)} className={props.opened ? 'dc' : ''}>
             <td>{user.name}</td>
