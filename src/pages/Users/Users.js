@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost';
 import EmptyPage from '../EmptyPage';
 import Dropdown from '../Dropdown';
 import { GET_USER } from '../../App';
+import PropTypes from 'prop-types';
 
 const GET_USERS = gql`
     query {
@@ -64,6 +65,9 @@ const AddUser = (props) => {
                 roles: role.current.value,
             }
         }).then(() => {
+            name.current.value = "";
+            email.current.value = "";
+            role.current.value = "";
             props.close()
         }).catch(err => {
             
@@ -90,6 +94,10 @@ const AddUser = (props) => {
             <button onClick={onAdd}>Add</button>
         </div>
     </div>
+}
+
+AddUser.propTypes = {
+    close: PropTypes.func.isRequired,
 }
 
 const UserRow = (props) => {
