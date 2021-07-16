@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { PropTypes } from 'prop-types';
@@ -78,12 +78,12 @@ const ImagePreview = (props) => {
     let [deleteImage] = useMutation(DELETE_IMAGE)
     const removeImage = () => {
         const cb = () => deleteImage(DELETE_IMAGE, {
-            variables: { id: props.id },
+            variables: { id: props.img.id },
             update(cache) {
                 const { images } = cache.readQuery({ query: GET_IMAGES })
                 cache.writeQuery({
                     query: GET_IMAGES,
-                    data: { images: images.filter(i => i !== props.id) }
+                    data: { images: images.filter(i => i !== props.img.id) }
                 })
             }
         })
@@ -96,6 +96,11 @@ const ImagePreview = (props) => {
         {!props.onSelect && <button onClick={removeImage}><img src="/close.svg" alt="remove" /></button>}
         <img src={props.img.filename} alt="preview" />
     </div>
+}
+
+ImagePreview.propTypes = {
+    onSelect: PropTypes.func,
+    img: PropTypes.object.isRequired,
 }
 
 export const ImageLibrary = (props) => {
@@ -119,6 +124,30 @@ export const ImageLibrary = (props) => {
             </div>
         </div>
     </div>
+}
+
+ImageLibrary.propTypes = {
+    onSelect: PropTypes.func,
+}
+
+export const ImageLibraryModal = ({ close, onSelect }) => {
+    useEffect(() => {
+        const listener = e => {
+            if (e.keyCode === 27) close();
+        }
+        document.addEventListener('keydown', listener);
+        return () => document.removeEventListener('keydown', listener);
+    }, []);
+    return <div className="mdl" onClick={close}>
+        <div className="mdl-l" onClick={e => e.stopPropagation()}>
+            <ImageLibrary onSelect={onSelect} />
+        </div>
+    </div>
+}
+
+ImageLibraryModal.propTypes = {
+    close: PropTypes.func.isRequired,
+    onSelect: PropTypes.func,
 }
 
 const Images = () => {

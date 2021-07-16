@@ -6,6 +6,7 @@ import { gql } from 'apollo-boost';
 import _ from 'lodash';
 import EmptyPage from '../EmptyPage';
 import Loading from '../Loading';
+import PropType from 'prop-types';
 
 const ProductCard = (props) => {
     let history = useHistory();
@@ -20,6 +21,10 @@ const ProductCard = (props) => {
             <div className="pc-m">{_.get(props.product.category, 'name')}</div>
         </div>
     </div>
+}
+
+ProductCard.propTypes = {
+    product: PropType.object.isRequired,
 }
 
 const GET_PRODUCTS = gql`

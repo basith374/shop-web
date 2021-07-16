@@ -203,6 +203,7 @@
 .mdl .mdl-l {
     padding-top: 15px;
     height: 100%;
+    width: 100%;
     overflow-y: scroll;
 }
 .mdl .mdl-c {

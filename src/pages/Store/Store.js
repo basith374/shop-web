@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import _ from 'lodash';
+import { ImageLibraryModal } from '../Images/Images';
 
 const GET_STORE = gql`
     query store($id: Int!) {
@@ -46,9 +47,11 @@ const UPDATE_STORE = gql`
 `
 
 export default () => {
+    const [img, setImg] = useState();
     let history = useHistory();
     let { id } = useParams();
     if(id) id = parseInt(id, 10)
+    const [showImageLibrary, setShowImageLibrary] = useState(false);
     const { data } = useQuery(GET_STORE, {
         skip: !id,
         variables: { id }
@@ -88,6 +91,7 @@ export default () => {
             locality: loca.current.value,
             pincode: pinc.current.value,
             active: actv.current.checked,
+            // TODO: add image
         }
         if(_.get(data, 'store')) updateStore({
             variables: { id, ...variables},
@@ -114,6 +118,10 @@ export default () => {
                 history.goBack()
             }
         })
+    }
+    const setImage = (i) => {
+        setImg(i);
+        setShowImageLibrary(false);
     }
     return <div>
         <div className="p-h">
@@ -147,6 +155,12 @@ export default () => {
             <div className="grp">
                 <label className="spc"><input type="checkbox" ref={actv} defaultChecked /> Active</label>
             </div>
+            <div className="grp" onClick={() => setShowImageLibrary(true)}>
+                <img src={img?.filename || '/photo.svg'} alt="preview" width="300" />
+            </div>
+            {showImageLibrary && <ImageLibraryModal
+                close={() => setShowImageLibrary(false)}
+                onSelect={setImage} />}
             <div className={id ? 'grp' : ''}>
                 <button onClick={createStore}>{_.get(data, 'store') ? 'Update' : 'Create'}</button>
             </div>
